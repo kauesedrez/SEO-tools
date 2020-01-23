@@ -63,7 +63,10 @@
 
             if (typeof keywords[i] != "undefined" && keywords[i] != "") {
 
-                var regex = new RegExp(keywords[i].trim(), 'ig');
+              
+                var regex = new RegExp("(^|\\W)"+keywords[i].trim()+"($|\\W)", 'ig');
+
+                console.log(regex)
 
                 var total = ((texto).match(regex) || []).length;
 
