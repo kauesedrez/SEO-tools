@@ -14,6 +14,41 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <title>Keywords | SEO-tools</title>
     <script type="text/javascript">
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("myTable");
+        switching = true;
+        /* Make a loop that will continue until
+        no switching has been done: */
+        while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 0; i < rows.length; i++) {
+                // Start by saying there should be no switching:
+                shouldSwitch = false;
+                /* Get the two elements you want to compare,
+                one from current row and one from the next: */
+                x = rows[i].getElementsByTagName("td")[1];
+                y = rows[i + 1].getElementsByTagName("td")[1];
+                // Check if the two rows should switch place:
+                if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+                    // If so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /* If a switch has been marked, make the switch
+                and mark that a switch has been done: */
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
     function processar() {
 
         var texto = $("#texto").val();
@@ -26,27 +61,31 @@
 
         for (var i = 0; i < keywords.length; i++) {
 
-            var regex = new RegExp(keywords[i].trim(), 'ig');
+            if (typeof keywords[i] != "undefined" && keywords[i] != "") {
 
-            var total = ((texto).match(regex) || []).length;
+                var regex = new RegExp(keywords[i].trim(), 'ig');
 
-            console.log(keywords[i], total)
+                var total = ((texto).match(regex) || []).length;
 
-            out += "<tr><td width=200px>";
-            out += keywords[i].trim();
-            out += "</td><td>";
-            out += total;
-            out += "</td></tr>"
+                console.log(keywords[i], total)
+
+                out += "<tr><td width=200px>";
+                out += keywords[i].trim();
+                out += "</td><td>";
+                out += total;
+                out += "</td></tr>"
+            }
 
         }
 
         var output = "<hr><h1>Resultado</h1>";
         output += "<h2>Total de caracteres: " + tamanho + " / 4000</h2>";
-        output += "<table class='table table-striped'>";
+        output += "<table class='table table-striped' id='myTable'>";
         output += out;
         output += "</table>"
 
         $("#output").html(output);
+        
     }
     </script>
 </head>
@@ -64,7 +103,8 @@
                 <textarea style="width:700px;height: 350px;" id='texto'></textarea>
             </div>
             <p>
-                <button class='btn btn-success' onclick='processar()'>Processar</button>
+                <button class='btn btn-success' onclick='processar()'>Processar</button> 
+                <button class='btn btn-warning' onclick='sortTable()'>Ordenar</button>
             </p>
         </form>
         <div id='output'></div>
