@@ -13,23 +13,75 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <title>Keywords | SEO-tools</title>
+    <script type="text/javascript">
+    function processar() {
+
+        var texto = $("#texto").val();
+        var tamanho = texto.length;
+        var keywords = $("#keywords").val();
+
+        keywords = keywords.split(/\n|,/);
+
+        var out = "";
+
+        for (var i = 0; i < keywords.length; i++) {
+
+            var regex = new RegExp(keywords[i].trim(), 'ig');
+
+            var total = ((texto).match(regex) || []).length;
+
+            console.log(keywords[i], total)
+
+            out += "<tr><td width=200px>";
+            out += keywords[i].trim();
+            out += "</td><td>";
+            out += total;
+            out += "</td></tr>"
+
+        }
+
+        var output = "<hr><h1>Resultado</h1>";
+        output += "<h2>Total de caracteres: " + tamanho + " / 4000</h2>";
+        output += "<table class='table table-striped'>";
+        output += out;
+        output += "</table>"
+
+        $("#output").html(output);
+
+
+
+    }
+    </script>
 </head>
 
 <body>
     <div class="container">
         <h1>Keywords Tool</h1>
         <form onsubmit="return false">
-            
-                <div style="display:inline-block;">
-                    <h3>Keyword e LongTails</h3>
-                    <textarea style="width:300px;height: 350px;" id='Keywords'></textarea>
-                </div>
-                <div style="display:inline-block;">
-                    <h3>Texto</h3>
-                    <textarea style="width:700px;height: 350px;" id='texto'></textarea>
-                </div>
-            
+            <div style="display:inline-block;">
+                <h3>Keyword e LongTails</h3>
+                <textarea style="width:300px;height: 350px;" id='keywords'>swing
+encontros grátis, a3menage</textarea>
+            </div>
+            <div style="display:inline-block;">
+                <h3>Texto</h3>
+                <textarea style="width:700px;height: 350px;" id='texto'>
+                  k l k l n k w
+s w k
+w
+s s
+site de encontros
+encontros grátis perto de você
+swing e menage
+a3menage
+a3menage.com
+                </textarea>
+            </div>
+            <p>
+                <button class='btn btn-success' onclick='processar()'>Processar</button>
+            </p>
         </form>
+        <div id='output'></div>
     </div>
 </body>
 
